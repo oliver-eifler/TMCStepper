@@ -1,6 +1,7 @@
 #pragma once
 
 //#define TMCDEBUG
+#define NO_SOFTWARE_SERIAL
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
@@ -8,6 +9,13 @@
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include <Arduino.h>
+#endif
+
+//#define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32)
+#if defined(NO_SOFTWARE_SERIAL)
+ #define SW_CAPABLE_PLATFORM false
+#else
+	#define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32)
 #endif
 
 #include <Stream.h>
