@@ -1,6 +1,7 @@
 #pragma once
 
 //#define TMCDEBUG
+//Olli To enable tmcxxxx SPI &&  ENDSTOP_INTERRUPTS_FEATURE, also set in TMCStepper.h
 #define NO_SOFTWARE_SERIAL
 
 #pragma GCC diagnostic push
