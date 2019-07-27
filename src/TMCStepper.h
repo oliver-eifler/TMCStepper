@@ -12,11 +12,11 @@
 	#include <Arduino.h>
 #endif
 
-//#define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32)
+//#define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_STM32F1)
 #if defined(NO_SOFTWARE_SERIAL)
  #define SW_CAPABLE_PLATFORM false
 #else
-	#define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32)
+  #define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_STM32F1)
 #endif
 
 #include <Stream.h>
