@@ -12,15 +12,19 @@
 	#include <Arduino.h>
 #endif
 
-//#define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_STM32F1)
+#include <Stream.h>
+#include <SPI.h>
+
 #if defined(NO_SOFTWARE_SERIAL)
  #define SW_CAPABLE_PLATFORM false
 #else
-  #define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_STM32F1)
+	#ifdef __has_include
+		#define SW_CAPABLE_PLATFORM __has_include(<SoftwareSerial.h>)
+	#else
+		#define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_STM32F1)
+	#endif
 #endif
 
-#include <Stream.h>
-#include <SPI.h>
 #if SW_CAPABLE_PLATFORM
 	#include <SoftwareSerial.h>
 #endif
@@ -47,7 +51,7 @@
 #define INIT2224_REGISTER(REG) TMC2224_n::REG##_t REG##_register = TMC2224_n::REG##_t
 #define SET_ALIAS(TYPE, DRIVER, NEW, ARG, OLD) TYPE (DRIVER::*NEW)(ARG) = &DRIVER::OLD
 
-#define TMCSTEPPER_VERSION 0x000405 // v0.4.5
+#define TMCSTEPPER_VERSION 0x000406 // v0.4.6
 
 class TMCStepper {
 	public:
