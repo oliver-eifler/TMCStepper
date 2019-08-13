@@ -1,8 +1,6 @@
 #pragma once
 
 //#define TMCDEBUG
-//Olli To enable tmcxxxx SPI &&  ENDSTOP_INTERRUPTS_FEATURE, also set in TMCStepper.h
-#define NO_SOFTWARE_SERIAL
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
@@ -14,6 +12,10 @@
 
 #include <Stream.h>
 #include <SPI.h>
+
+// Olli: To enable tmcxxxx SPI and ENDSTOP_INTERRUPTS_FEATURE
+// use build_flags = -fmax-errors=5 -D NO_SOFTWARE_SERIAL
+// in platformio.ini
 
 #if defined(NO_SOFTWARE_SERIAL)
  #define SW_CAPABLE_PLATFORM false
