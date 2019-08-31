@@ -14,10 +14,10 @@
 #include <SPI.h>
 
 // Olli: To enable tmcxxxx SPI and ENDSTOP_INTERRUPTS_FEATURE
-// use build_flags = -fmax-errors=5 -D NO_SOFTWARE_SERIAL
+// use build_flags = -fmax-errors=5 -D FORCE_NO_SW_SERIAL
 // in platformio.ini
 
-#if defined(NO_SOFTWARE_SERIAL)
+#if defined(FORCE_NO_SW_SERIAL)
  #define SW_CAPABLE_PLATFORM false
 #else
 	#ifdef __has_include
