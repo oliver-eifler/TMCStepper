@@ -12,18 +12,13 @@
 
 #include <Stream.h>
 #include <SPI.h>
-
-// Olli: To enable tmcxxxx SPI and ENDSTOP_INTERRUPTS_FEATURE
-// use build_flags = -fmax-errors=5 -D FORCE_NO_SW_SERIAL
-// in platformio.ini
-
 #if defined(FORCE_NO_SW_SERIAL)
  #define SW_CAPABLE_PLATFORM false
 #else
-	#ifdef (__cplusplus == 201703L) && defined(__has_include)
+	#if (__cplusplus == 201703L) && defined(__has_include)
 		#define SW_CAPABLE_PLATFORM __has_include(<SoftwareSerial.h>)
 	#else
-		#define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_STM32F1)
+		#define SW_CAPABLE_PLATFORM defined(__AVR__) || defined(TARGET_LPC1768) || defined(ARDUINO_ARCH_STM32)
 	#endif
 #endif
 
@@ -624,8 +619,8 @@ class TMC5130Stepper : public TMC2160Stepper {
 		int32_t X_ENC();
 		void X_ENC(int32_t input);
 		// W: ENC_CONST
-		uint16_t ENC_CONST();
-		void ENC_CONST(uint16_t input);
+		uint32_t ENC_CONST();
+		void ENC_CONST(uint32_t input);
 		// R: ENC_STATUS
 		bool ENC_STATUS();
 		// R: ENC_LATCH
