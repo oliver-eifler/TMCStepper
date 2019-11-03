@@ -991,7 +991,7 @@ class TMC2208Stepper : public TMCStepper {
 
 		Stream * HWSerial = nullptr;
 		#if SW_CAPABLE_PLATFORM
-			SoftwareSerial * SWSerial = nullptr;
+			SoftwareSerial * SWSerial = NULL;
 			const uint16_t RXTX_pin = 0; // Half duplex
 		#endif
 
