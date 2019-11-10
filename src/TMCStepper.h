@@ -818,15 +818,19 @@ class TMC2208Stepper : public TMCStepper {
 			TMC2208Stepper(SerialPort, RS, TMC2208_SLAVE_ADDR)
 			{}
 		#if SW_CAPABLE_PLATFORM
-			TMC2208Stepper(uint16_t SW_RX_pin, uint16_t SW_TX_pin, float RS, bool has_rx=true) :
-				TMC2208Stepper(SW_RX_pin, SW_TX_pin, RS, TMC2208_SLAVE_ADDR, has_rx)
+			TMC2208Stepper(uint16_t SW_RX_pin, uint16_t SW_TX_pin, float RS) :
+				TMC2208Stepper(SW_RX_pin, SW_TX_pin, RS, TMC2208_SLAVE_ADDR)
 				{}
+		#else
+			TMC2208Stepper(uint16_t, uint16_t, float) = delete; // Your platform does not currently support Software Serial
 		#endif
 		void defaults();
 		void push();
 		void begin();
 		#if SW_CAPABLE_PLATFORM
-		void beginSerial(uint32_t baudrate);
+			void beginSerial(uint32_t baudrate);
+		#else
+			void beginSerial(uint32_t) = delete; // Your platform does not currently support Software Serial
 		#endif
 		bool isEnabled();
 
@@ -963,8 +967,6 @@ class TMC2208Stepper : public TMCStepper {
 		uint8_t pwm_ofs_auto();
 		uint8_t pwm_grad_auto();
 
-		bool isWriteOnly() {return write_only;}
-
 		uint16_t bytesWritten = 0;
 		float Rsense = 0.11;
 		bool CRCerror = false;
@@ -982,12 +984,13 @@ class TMC2208Stepper : public TMCStepper {
 
 		TMC2208Stepper(Stream * SerialPort, float RS, uint8_t addr);
 		#if SW_CAPABLE_PLATFORM
-			TMC2208Stepper(uint16_t SW_RX_pin, uint16_t SW_TX_pin, float RS, uint8_t addr, bool has_rx);
+			TMC2208Stepper(uint16_t SW_RX_pin, uint16_t SW_TX_pin, float RS, uint8_t addr);
 		#endif
 
 		Stream * HWSerial = NULL;
 		#if SW_CAPABLE_PLATFORM
 			SoftwareSerial * SWSerial = NULL;
+			const uint16_t RXTX_pin = 0; // Half duplex
 		#endif
 
 		SSwitch *sswitch = NULL;
@@ -998,13 +1001,12 @@ class TMC2208Stepper : public TMCStepper {
 		uint8_t calcCRC(uint8_t datagram[], uint8_t len);
 		static constexpr uint8_t  TMC2208_SYNC = 0x05,
 															TMC2208_SLAVE_ADDR = 0x00;
-		const bool write_only;
 		static constexpr uint8_t replyDelay = 2;
 		static constexpr uint8_t abort_window = 5;
 		static constexpr uint8_t max_retries = 2;
 
 		template<typename SERIAL_TYPE>
-		friend uint64_t _sendDatagram(SERIAL_TYPE &, uint8_t [], const uint8_t, uint16_t);
+		uint64_t _sendDatagram(SERIAL_TYPE &, uint8_t [], const uint8_t, uint16_t);
 };
 
 class TMC2209Stepper : public TMC2208Stepper {
@@ -1013,8 +1015,10 @@ class TMC2209Stepper : public TMC2208Stepper {
 			TMC2208Stepper(SerialPort, RS, addr) {}
 
 		#if SW_CAPABLE_PLATFORM
-			TMC2209Stepper(uint16_t SW_RX_pin, uint16_t SW_TX_pin, float RS, uint8_t addr, bool has_rx = true) :
-				TMC2208Stepper(SW_RX_pin, SW_TX_pin, RS, addr, has_rx) {}
+			TMC2209Stepper(uint16_t SW_RX_pin, uint16_t SW_TX_pin, float RS, uint8_t addr) :
+				TMC2208Stepper(SW_RX_pin, SW_TX_pin, RS, addr) {}
+		#else
+			TMC2209Stepper(uint16_t, uint16_t, float, uint8_t) = delete; // Your platform does not currently support Software Serial
 		#endif
 		void push();
 
