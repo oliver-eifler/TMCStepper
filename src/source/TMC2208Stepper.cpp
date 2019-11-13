@@ -24,8 +24,8 @@ TMC2208Stepper::TMC2208Stepper(Stream * SerialPort, float RS, uint8_t addr, uint
 	// addr needed for TMC2209
 	TMC2208Stepper::TMC2208Stepper(uint16_t SW_RX_pin, uint16_t SW_TX_pin, float RS, uint8_t addr) :
 		TMCStepper(RS),
-		slave_address(addr),
-		RXTX_pin(SW_RX_pin == SW_TX_pin ? SW_RX_pin : 0)
+		RXTX_pin(SW_RX_pin == SW_TX_pin ? SW_RX_pin : 0),
+		slave_address(addr)
 		{
 			SoftwareSerial *SWSerialObj = new SoftwareSerial(SW_RX_pin, SW_TX_pin);
 			SWSerial = SWSerialObj;
@@ -114,7 +114,7 @@ void TMC2208Stepper::write(uint8_t addr, uint32_t regVal) {
 			if (sswitch != NULL)
 				sswitch->active();
 
-			for(int i=0; i<=len; i++){			
+			for(int i=0; i<=len; i++){
 				bytesWritten += HWSerial->write(datagram[i]);
 		}
 	}
