@@ -1,4 +1,5 @@
 Arduino library for Trinamic TMC stepper motor drivers.
+** v0.6.1 + FORCE_NO_SW_SERIAL **
 
 Supported TMC drivers:
 * TMC2130
