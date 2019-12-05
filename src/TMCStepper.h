@@ -12,8 +12,15 @@
 
 #include <Stream.h>
 #include <SPI.h>
+
+//olli: no software serial in tmcstepper lib
 #if defined(FORCE_NO_SW_SERIAL)
  #define SW_CAPABLE_PLATFORM false
+ //olli: on avr avoid 'RXTX_pin' was not declared in this scope... 
+ #if defined(ARDUINO_ARCH_AVR)
+	const uint16_t RXTX_pin = 0; // Half duplex
+ #endif
+
 #else
 	#if (__cplusplus == 201703L) && defined(__has_include)
 		#define SW_CAPABLE_PLATFORM __has_include(<SoftwareSerial.h>)
@@ -811,6 +818,8 @@ class TMC5161Stepper : public TMC5160Stepper {
 			TMC5160Stepper(pinCS, RS, pinMOSI, pinMISO, pinSCK, link_index) {}
 };
 
+//avoid 'RXTX_pin' was not declared in this scope... with avr and FORCE_NO_SWSERIAL 
+#if !(defined(ARDUINO_ARCH_AVR) && defined(FORCE_NO_SWSERIAL))
 class TMC2208Stepper : public TMCStepper {
 	public:
 	    TMC2208Stepper(Stream * SerialPort, float RS, uint8_t addr, uint16_t mul_pin1, uint16_t mul_pin2);
@@ -1008,6 +1017,7 @@ class TMC2208Stepper : public TMCStepper {
 		template<typename SERIAL_TYPE>
 		uint64_t _sendDatagram(SERIAL_TYPE &, uint8_t [], const uint8_t, uint16_t);
 };
+#endif
 
 class TMC2209Stepper : public TMC2208Stepper {
 	public:
