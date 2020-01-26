@@ -363,7 +363,7 @@ class TMC2130Stepper : public TMCStepper {
 
 		static uint32_t spi_speed; // Default 2MHz
 		const uint16_t _pinCS;
-		SW_SPIClass * TMC_SW_SPI = NULL;
+		SW_SPIClass * TMC_SW_SPI = nullptr;
 		static constexpr float default_RS = 0.11;
 
 		int8_t link_index;
@@ -996,14 +996,16 @@ class TMC2208Stepper : public TMCStepper {
 			TMC2208Stepper(uint16_t SW_RX_pin, uint16_t SW_TX_pin, float RS, uint8_t addr);
 		#endif
 
-		Stream * HWSerial = NULL;
+		Stream * HWSerial = nullptr;
 		#if SW_CAPABLE_PLATFORM
-			SoftwareSerial * SWSerial = NULL;
+			SoftwareSerial * SWSerial = nullptr;
 			const uint16_t RXTX_pin = 0; // Half duplex
 		#endif
 
-		SSwitch *sswitch = NULL;
+		SSwitch *sswitch = nullptr;
 
+		template<class SERIAL_TYPE> int16_t serial_read(SERIAL_TYPE &serPtr) __attribute__((weak));
+		template<class SERIAL_TYPE> uint8_t serial_write(SERIAL_TYPE &serPtr, const uint8_t data) __attribute__((weak));
 		void write(uint8_t, uint32_t);
 		uint32_t read(uint8_t);
 		const uint8_t slave_address;
@@ -1248,5 +1250,5 @@ class TMC2660Stepper {
 		float holdMultiplier = 0.5;
 		uint32_t spi_speed = 16000000/8; // Default 2MHz
 		uint8_t _savedToff = 0;
-		SW_SPIClass * TMC_SW_SPI = NULL;
+		SW_SPIClass * TMC_SW_SPI = nullptr;
 };
