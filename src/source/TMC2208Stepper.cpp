@@ -142,14 +142,14 @@ void TMC2208Stepper::write(uint8_t addr, uint32_t regVal) {
 
 template<typename SERIAL_TYPE>
 uint64_t TMC2208Stepper::_sendDatagram(SERIAL_TYPE &serPtr, uint8_t datagram[], const uint8_t len, uint16_t timeout) {
-	while (serPtr.available() > 0) serPtr.read(); // Flush
+	while (serPtr.available() > 0) serial_read(serPtr); // Flush
 
 	#if SW_CAPABLE_PLATFORM
 		if (RXTX_pin > 0)
 			pinMode(RXTX_pin, OUTPUT);
 	#endif
 
-	for(int i=0; i<=len; i++) serPtr.write(datagram[i]);
+	for(int i=0; i<=len; i++) serial_write(serPtr, datagram[i]);
 
 	#if SW_CAPABLE_PLATFORM
 		if (RXTX_pin > 0)
