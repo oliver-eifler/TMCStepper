@@ -8,10 +8,13 @@
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include <Arduino.h>
+	#include <SPI.h>
+	#include <Stream.h>
+#elif defined(bcm2835)
+	#include <bcm2835.h>
+	#include "source/bcm2835_spi.h"
+	#include "source/bcm2835_stream.h"
 #endif
-
-#include <Stream.h>
-#include <SPI.h>
 
 //olli: no software serial in tmcstepper lib
 #if defined(FORCE_NO_SW_SERIAL)
